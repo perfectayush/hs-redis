@@ -1,0 +1,24 @@
+---
+- name: Install redis ppa
+  apt_repository: repo="ppa:chris-lea/redis-server" state=present
+
+- name: Install the Redis packages
+  apt: name={{ item }} state=present
+  with_items:
+    - "redis-server"
+    - "redis-tools"
+
+- name: Copy the redis configuration file
+  template: src=redis.conf.j2 dest={{redis_conf_dest}} owner={{redis_user}} group={{redis_group}} mode=600
+  notify:
+   - restart redis
+
+- name: Create the data directory for redis
+  file: path={{redis_db_dir}} owner={{redis_user}} group={{redis_group}} state=directory mode=0755
+
+- name: Create the log directory for redis
+  file: path={{redis_log_dir}} owner={{redis_user}} group={{redis_group}} state=directory mode=0755
+
+- name: start the redis service
+  service: name=redis-server state=started enabled=yes
+

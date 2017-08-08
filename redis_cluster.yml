@@ -1,0 +1,11 @@
+---
+- name: Deploy redis
+  hosts: "cl_redis-vagrant"
+  max_fail_percentage: "{{cli_max_fail_percentage|default(100)}}"
+  sudo: yes
+  vars:
+    redis_master_server: redis1
+    redis_master_ip: "{{hostvars[redis_master_server].ec2_private_ip_address}}"
+    redis_role: "{{'master' if inventory_hostname == redis_master_server else 'slave'}}"
+  roles:
+    - role: hs-redis

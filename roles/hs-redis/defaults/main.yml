@@ -1,0 +1,34 @@
+---
+redis_user: redis
+redis_group: redis
+redis_conf_dest: /etc/redis/redis.conf
+
+redis_port: 6379
+redis_bind_address: "0.0.0.0"
+
+redis_log_level: notice
+redis_log_file: /var/log/redis/redis.log
+redis_log_dir: /var/log/redis
+redis_pidfile: /var/run/redis/redis-server.pid
+redis_syslog_enabled: "yes"
+
+redis_dbfilename: redis-dump.rdb
+redis_db_dir: /var/lib/redis
+redis_databases: 16
+redis_database_save_times:
+  - [900, 1]
+  - [300, 10]
+  - [60, 10000]
+
+redis_max_clients: 0
+redis_max_memory: ~
+redis_maxmemory_policy: volatile-lru
+redis_appendfsync: everysec
+
+# set redis_role to slave for slave configuration
+redis_role: master
+
+# If role is slave set these values too
+redis_master_ip: ~
+redis_master_port: 6379
+redis_slave_serve_stale_data: "yes"
